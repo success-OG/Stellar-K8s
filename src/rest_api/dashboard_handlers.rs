@@ -211,7 +211,10 @@ pub async fn get_node_logs(
             }
         }
         Err(e) => {
-            error!("Failed to list pods for node {}/{}: {:?}", namespace, name, e);
+            error!(
+                "Failed to list pods for node {}/{}: {:?}",
+                namespace, name, e
+            );
             Err((
                 StatusCode::INTERNAL_SERVER_ERROR,
                 Json(ErrorResponse::new("list_pods_failed", &e.to_string())),
@@ -305,7 +308,10 @@ async fn restart_node(
 }
 
 /// Trigger a manual snapshot
-async fn trigger_snapshot(api: &Api<StellarNode>, node: &StellarNode) -> Result<String, kube::Error> {
+async fn trigger_snapshot(
+    api: &Api<StellarNode>,
+    node: &StellarNode,
+) -> Result<String, kube::Error> {
     let name = node.name_any();
 
     let patch = serde_json::json!({
@@ -316,8 +322,12 @@ async fn trigger_snapshot(api: &Api<StellarNode>, node: &StellarNode) -> Result<
         }
     });
 
-    api.patch(&name, &PatchParams::apply("stellar-dashboard"), &Patch::Merge(&patch))
-        .await?;
+    api.patch(
+        &name,
+        &PatchParams::apply("stellar-dashboard"),
+        &Patch::Merge(&patch),
+    )
+    .await?;
 
     Ok(format!("Snapshot requested for node {name}"))
 }
@@ -332,8 +342,12 @@ async fn suspend_node(api: &Api<StellarNode>, node: &StellarNode) -> Result<Stri
         }
     });
 
-    api.patch(&name, &PatchParams::apply("stellar-dashboard"), &Patch::Merge(&patch))
-        .await?;
+    api.patch(
+        &name,
+        &PatchParams::apply("stellar-dashboard"),
+        &Patch::Merge(&patch),
+    )
+    .await?;
 
     Ok(format!("Node {name} suspended"))
 }
@@ -348,8 +362,12 @@ async fn resume_node(api: &Api<StellarNode>, node: &StellarNode) -> Result<Strin
         }
     });
 
-    api.patch(&name, &PatchParams::apply("stellar-dashboard"), &Patch::Merge(&patch))
-        .await?;
+    api.patch(
+        &name,
+        &PatchParams::apply("stellar-dashboard"),
+        &Patch::Merge(&patch),
+    )
+    .await?;
 
     Ok(format!("Node {name} resumed"))
 }

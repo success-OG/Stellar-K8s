@@ -2,7 +2,7 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::crd::{Condition, NodeType, StellarNetwork};
+use crate::crd::Condition;
 
 /// Dashboard overview response
 #[derive(Debug, Serialize)]
