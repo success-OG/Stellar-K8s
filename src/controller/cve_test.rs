@@ -517,7 +517,7 @@ mod tests {
         // When annotation is not present, default should be to enable auto-patch
         let annotation_present = false;
         let default_enabled = true;
-        
+
         if !annotation_present {
             assert!(default_enabled, "Default behavior should enable auto-patch");
         }

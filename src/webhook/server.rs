@@ -262,7 +262,7 @@ impl WebhookServer {
             .route("/plugins", get(list_plugins_handler))
             .route("/plugins", post(add_plugin_handler))
             .route(
-                "/plugins/:name",
+                "/plugins/{name}",
                 axum::routing::delete(remove_plugin_handler),
             )
             .with_state(state);
