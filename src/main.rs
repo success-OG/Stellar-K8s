@@ -133,7 +133,6 @@ struct RunArgs {
     /// Example: --dump-config
     #[arg(long)]
     dump_config: bool,
-    /// Run preflight checks and exit without starting the operator
 
     /// Run preflight checks and exit without starting the operator.
     /// Env: PREFLIGHT_ONLY
