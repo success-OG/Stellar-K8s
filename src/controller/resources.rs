@@ -145,8 +145,7 @@ pub async fn ensure_pvc(client: &Client, node: &StellarNode, dry_run: bool) -> R
         has_local_path = sc_api.get("local-path").await.is_ok();
         has_local_storage = sc_api.get("local-storage").await.is_ok();
     }
-    let resolved_storage_class =
-        resolve_pvc_storage_class(node, has_local_path, has_local_storage);
+    let resolved_storage_class = resolve_pvc_storage_class(node, has_local_path, has_local_storage);
     if node.spec.storage.mode == crate::crd::types::StorageMode::Local
         && resolved_storage_class.is_empty()
     {
@@ -2585,7 +2584,9 @@ mod ensure_pvc_tests {
         let pvc = build_pvc(&node, "gp3".to_string());
 
         assert_eq!(
-            pvc.spec.as_ref().and_then(|s| s.storage_class_name.as_deref()),
+            pvc.spec
+                .as_ref()
+                .and_then(|s| s.storage_class_name.as_deref()),
             Some("gp3")
         );
     }

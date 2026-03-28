@@ -365,12 +365,16 @@ fn store_cached_vsl(url: &str, quorum_set: QuorumSet) {
 }
 
 fn http_client() -> Result<&'static Client> {
-    HTTP_CLIENT.get_or_try_init(|| {
-        Client::builder()
-            .timeout(Duration::from_secs(10))
-            .build()
-            .map_err(|e| Error::ConfigError(format!("Failed to build HTTP client: {e}")))
-    })
+    if let Some(client) = HTTP_CLIENT.get() {
+        return Ok(client);
+    }
+
+    let client = Client::builder()
+        .timeout(Duration::from_secs(10))
+        .build()
+        .map_err(|e| Error::ConfigError(format!("Failed to build HTTP client: {e}")))?;
+
+    Ok(HTTP_CLIENT.get_or_init(|| client))
 }
 
 // ---------------------------------------------------------------------------

@@ -912,13 +912,27 @@ mod tests {
 
     #[test]
     fn test_set_ledger_sequence() {
-        set_ledger_sequence("default", "test-node", "horizon", "testnet", "Intel Icelake", 12345);
+        set_ledger_sequence(
+            "default",
+            "test-node",
+            "horizon",
+            "testnet",
+            "Intel Icelake",
+            12345,
+        );
         // Function should not panic
     }
 
     #[test]
     fn test_set_ingestion_lag() {
-        set_ingestion_lag("default", "test-node", "core", "testnet", "Intel Icelake", 5);
+        set_ingestion_lag(
+            "default",
+            "test-node",
+            "core",
+            "testnet",
+            "Intel Icelake",
+            5,
+        );
         // Function should not panic
     }
 
