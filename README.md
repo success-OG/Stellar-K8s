@@ -463,6 +463,28 @@ groups:
 
 For more details on Soroban metrics, see the [Stellar Soroban RPC documentation](https://developers.stellar.org/docs/data/apis/rpc/admin-guide/monitoring).
 
+### High Availability & Pod Disruption Budgets
+
+Stellar-K8s includes built-in PodDisruptionBudget (PDB) support to protect the operator and validator nodes during Kubernetes maintenance operations like node drains and cluster upgrades.
+
+**Default Configuration:**
+
+```yaml
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+```
+
+**For Validator Nodes (Recommended):**
+
+```yaml
+podDisruptionBudget:
+  enabled: true
+  maxUnavailable: 1 # Allows one pod down during maintenance
+```
+
+For comprehensive guidance on PDB configuration, emergency maintenance procedures, and troubleshooting, see **[docs/pod-disruption-budget.md](docs/pod-disruption-budget.md)**.
+
 ---
 
 ## 📖 API Reference
