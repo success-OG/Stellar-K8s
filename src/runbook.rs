@@ -17,15 +17,17 @@
 //! ```rust,ignore
 //! use stellar_k8s::runbook::generate_runbook;
 //! use stellar_k8s::crd::StellarNode;
+//! use kube::ResourceExt;
 //!
 //! let node: StellarNode = /* ... */;
 //! let runbook = generate_runbook(&node)?;
 //! println!("{}", runbook);
 //! ```
 
-use crate::crd::{StellarNode, StellarNodeSpec};
+use crate::crd::StellarNode;
 use crate::error::Result;
 use chrono::Utc;
+use kube::ResourceExt;
 
 /// Generates a comprehensive troubleshooting runbook for a StellarNode
 ///

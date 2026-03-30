@@ -37,6 +37,7 @@ use crate::error::Result;
 use k8s_openapi::api::apps::v1::Deployment;
 use kube::api::{Api, Patch, PatchParams};
 use kube::Client;
+use kube::ResourceExt;
 use serde_json::json;
 use std::time::Duration;
 use tracing::{debug, info, warn};
