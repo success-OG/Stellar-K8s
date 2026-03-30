@@ -14,6 +14,7 @@ spec:
 
   # The new Rolling Strategy defining a canary
   strategy:
+    type: canary
     canary:
       # Traffic weight routed to the new canary version
       weight: 10
