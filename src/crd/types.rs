@@ -83,6 +83,36 @@ impl StellarNetwork {
             StellarNetwork::Custom(passphrase) => passphrase,
         }
     }
+
+    /// Stable, DNS-1123-friendly label value for topology spread and anti-affinity.
+    pub fn scheduling_label_value(&self) -> String {
+        match self {
+            StellarNetwork::Mainnet => "mainnet".to_string(),
+            StellarNetwork::Testnet => "testnet".to_string(),
+            StellarNetwork::Futurenet => "futurenet".to_string(),
+            StellarNetwork::Custom(passphrase) => {
+                use std::collections::hash_map::DefaultHasher;
+                use std::hash::{Hash, Hasher};
+                let mut h = DefaultHasher::new();
+                passphrase.hash(&mut h);
+                format!("custom-{:x}", h.finish())
+            }
+        }
+    }
+}
+
+/// Controls default pod anti-affinity for spreading pods that share the same
+/// [`StellarNetwork`] across nodes.
+#[derive(Clone, Debug, Default, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "PascalCase")]
+pub enum PodAntiAffinityStrength {
+    /// `requiredDuringScheduling` — do not place on a node that already runs a matching pod.
+    #[default]
+    Hard,
+    /// `preferredDuringScheduling` — best-effort separation with weight 100.
+    Soft,
+    /// Do not inject pod anti-affinity (topology spread defaults still apply unless overridden).
+    Disabled,
 }
 
 /// Kubernetes-style resource requirements
@@ -1015,6 +1045,18 @@ pub struct DRDrillResult {
     pub started_at: String,
     /// Timestamp when drill completed
     pub completed_at: Option<String>,
+}
+
+/// Placement configuration for intelligent pod scheduling.
+/// Enables SCP-aware anti-affinity to ensure validator resilience.
+#[derive(Clone, Debug, Default, Deserialize, Serialize, JsonSchema, PartialEq, Eq)]
+#[serde(rename_all = "camelCase")]
+pub struct PlacementConfig {
+    /// Enable SCP-aware anti-affinity.
+    /// When true, the operator will inject podAntiAffinity rules to discourage
+    /// placing nodes from the same quorum slice on the same physical host.
+    #[serde(default)]
+    pub scp_aware_anti_affinity: bool,
 }
 
 /// Status of a DR drill execution
