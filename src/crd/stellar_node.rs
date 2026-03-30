@@ -13,7 +13,7 @@ use super::types::{
     AutoscalingConfig, Condition, CrossClusterConfig, DisasterRecoveryConfig,
     DisasterRecoveryStatus, ExternalDatabaseConfig, ForensicSnapshotConfig, GlobalDiscoveryConfig,
     HistoryMode, HorizonConfig, IngressConfig, LoadBalancerConfig, ManagedDatabaseConfig,
-    NetworkPolicyConfig, NodeType, OciSnapshotConfig, PodAntiAffinityStrength,
+    NetworkPolicyConfig, NodeType, OciSnapshotConfig, PlacementConfig, PodAntiAffinityStrength,
     ResourceRequirements, RestoreFromSnapshotConfig, RetentionPolicy, RolloutStrategy,
     SnapshotScheduleConfig, SorobanConfig, StellarNetwork, StorageConfig, ValidatorConfig,
     VpaConfig,
@@ -146,6 +146,10 @@ pub struct StellarNodeSpec {
     /// `stellar-network` label (and same component) are not co-located on one node.
     #[serde(default)]
     pub pod_anti_affinity: PodAntiAffinityStrength,
+
+    /// Intelligent pod placement configuration (e.g. SCP-aware anti-affinity)
+    #[serde(default)]
+    pub placement: PlacementConfig,
 
     #[serde(skip_serializing_if = "Option::is_none")]
     #[schemars(schema_with = "super::schema_utils::array_of_objects_schema")]

@@ -319,6 +319,8 @@ VALIDATORS=["VALIDATOR1", "VALIDATOR2"]"#
                 instance: None,
             },
             operator_config: Arc::new(Default::default()),
+            reconcile_id_counter: std::sync::atomic::AtomicU64::new(0),
+            last_reconcile_success: Arc::new(std::sync::atomic::AtomicU64::new(0)),
         });
 
         // Test with a retriable error (network-related)
@@ -353,6 +355,8 @@ VALIDATORS=["VALIDATOR1", "VALIDATOR2"]"#
                 instance: None,
             },
             operator_config: Arc::new(Default::default()),
+            reconcile_id_counter: std::sync::atomic::AtomicU64::new(0),
+            last_reconcile_success: Arc::new(std::sync::atomic::AtomicU64::new(0)),
         });
 
         // Test with validation error (non-retriable)
@@ -386,6 +390,8 @@ VALIDATORS=["VALIDATOR1", "VALIDATOR2"]"#
                 instance: None,
             },
             operator_config: Arc::new(Default::default()),
+            reconcile_id_counter: std::sync::atomic::AtomicU64::new(0),
+            last_reconcile_success: Arc::new(std::sync::atomic::AtomicU64::new(0)),
         });
 
         let errors = vec![
@@ -612,6 +618,8 @@ VALIDATORS=["VALIDATOR1", "VALIDATOR2"]"#
                 instance: None,
             },
             operator_config: Arc::new(Default::default()),
+            reconcile_id_counter: std::sync::atomic::AtomicU64::new(0),
+            last_reconcile_success: Arc::new(std::sync::atomic::AtomicU64::new(0)),
         };
 
         assert_eq!(state.operator_namespace, "test-namespace");
@@ -641,6 +649,8 @@ VALIDATORS=["VALIDATOR1", "VALIDATOR2"]"#
                 instance: None,
             },
             operator_config: Arc::new(Default::default()),
+            reconcile_id_counter: std::sync::atomic::AtomicU64::new(0),
+            last_reconcile_success: Arc::new(std::sync::atomic::AtomicU64::new(0)),
         };
 
         assert!(
