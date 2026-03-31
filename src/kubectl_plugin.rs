@@ -244,9 +244,7 @@ async fn run(cli: Cli) -> Result<()> {
             explain::explain_error(&error_code);
             Ok(())
         }
-        Commands::Search { query, full } => {
-            search_docs(&query, full)
-        }
+        Commands::Search { query, full } => search_docs(&query, full),
         Commands::Completions { shell } => {
             use clap::CommandFactory;
             use clap_complete::generate;
@@ -263,7 +261,7 @@ fn search_docs(query: &str, full: bool) -> Result<()> {
     let results = search::search(query);
 
     if results.is_empty() {
-        println!("No results found for '{}'", query);
+        println!("No results found for '{query}'");
         return Ok(());
     }
 
@@ -275,7 +273,7 @@ fn search_docs(query: &str, full: bool) -> Result<()> {
             println!("{}\n", doc.content);
         } else {
             for snippet in snippets {
-                println!("  {}\n", snippet);
+                println!("  {snippet}\n");
             }
         }
     }
@@ -833,6 +831,7 @@ mod tests {
                 network_policy: None,
                 dr_config: None,
                 pod_anti_affinity: Default::default(),
+                placement: Default::default(),
                 topology_spread_constraints: None,
                 cve_handling: None,
                 read_replica_config: None,
@@ -840,6 +839,7 @@ mod tests {
                 oci_snapshot: None,
                 service_mesh: None,
                 forensic_snapshot: None,
+                label_propagation: None,
                 resource_meta: None,
                 read_pool_endpoint: None,
             },
@@ -865,6 +865,7 @@ mod tests {
                 quorum_analysis_timestamp: None,
                 vault_observed_secret_version: None,
                 forensic_snapshot_phase: None,
+                label_propagation_status: None,
             }),
         }
     }
